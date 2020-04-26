@@ -1,0 +1,7 @@
+Usage:
+Plazacraft.HOMM3.DamageSymulator.Console <world def> <fight def> [<output>]
+
+where:
+<world def> - definition of the world (configuration)
+<fight def> - definition of the fight
+<output>    - possible values: csv, html, htmlchart

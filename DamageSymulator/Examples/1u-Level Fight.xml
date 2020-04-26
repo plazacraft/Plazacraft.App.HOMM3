@@ -1,0 +1,30 @@
+<Fight Terrain='Sand' xsi:schemaLocation='urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator http://homm3.plazacraft.com/damagesymulator/schemas/Plazacraft.HOMM3.DamageSymulator.Fight.xsd' xmlns='urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+    <Attacker Attack='0' Defense='0' Level='0'>
+        <Creature Name='Halaberdier' Count='28' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Centaur captain' Count='28' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Master Gremlin' Count='32' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Familiar' Count='38' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Skeleton Warrior' Count='30' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Infernal Troglodyte' Count='35' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Hobgoblin' Count='38' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Gnoll Marauder' Count='30' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Sprite' Count='50' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Oceanid' Count='32' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Peasant' Count='25' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Halfling' Count='15' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+    </Attacker>
+    <Defender Attack='0' Defense='0' Level='0'>
+        <Creature Name='Halaberdier' Count='28' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Centaur captain' Count='28' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Master Gremlin' Count='32' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Familiar' Count='38' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Skeleton Warrior' Count='30' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Infernal Troglodyte' Count='35' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Hobgoblin' Count='38' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Gnoll Marauder' Count='30' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Sprite' Count='50' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Oceanid' Count='32' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Peasant' Count='25' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Halfling' Count='15' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+    </Defender>
+</Fight>

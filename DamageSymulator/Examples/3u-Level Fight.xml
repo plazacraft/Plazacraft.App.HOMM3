@@ -1,0 +1,32 @@
+<Fight Terrain='Sand' xsi:schemaLocation='urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator http://homm3.plazacraft.com/damagesymulator/schemas/Plazacraft.HOMM3.DamageSymulator.Fight.xsd' xmlns='urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+    <Attacker Attack='0' Defense='0' Level='0'>
+        <Creature Name='Royal Griffin' Count='17' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Grand Elf' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Iron Golem' Count='12' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Cerberus' Count='13' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Wraith' Count='14' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Evil Eye' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Orc Chieftain' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Dragon Fly' Count='16' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Ice Elemental' Count='12' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Corsair' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Sea Dog' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Mummy' Count='7' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Nomad' Count='7' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+    </Attacker>
+    <Defender Attack='0' Defense='0' Level='0'>
+        <Creature Name='Royal Griffin' Count='17' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Grand Elf' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Iron Golem' Count='12' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Cerberus' Count='13' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Wraith' Count='14' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Evil Eye' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Orc Chieftain' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Dragon Fly' Count='16' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Ice Elemental' Count='12' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Corsair' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Sea Dog' Count='14' AttackType='Ranged' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Mummy' Count='7' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+        <Creature Name='Nomad' Count='7' AttackType='Melee' Luck='false' RangePenalty='None' ObstaclePenalty='None'/>
+    </Defender>
+</Fight>

@@ -1,0 +1,755 @@
+<!-- http://www.lexiconista.com/Xonomy -->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Heroes of Might & Magic 3 Damage Simulator" />
+    <meta name="keywords" content="HOMM3 Heroes 3 damage simulator calculator formula game games" />
+    <meta name="author" content="plazacraft" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script type="text/javascript" src="xonomy-3.5.0/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="xonomy-3.5.0/xonomy.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="xonomy-3.5.0/xonomy.css"/>
+    <style>
+        .optimistic {
+            color: green;
+            font-weight: bold;
+            display: inline;
+        }
+        .pesimistic {
+            color: red;
+            font-weight: bold;
+            display: inline;
+        }
+        .win {
+            background-color: lightgreen !important;
+        }
+        .lost {
+            background-color: lightcoral !important;
+        }
+        .statusok {
+            color: green
+        }
+        .statuserror {
+            color: red
+        }
+
+        /* Style the tab */
+        .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+        background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+        background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+        }
+
+        /* Style results */
+        .result table {
+            border: 2px solid #FFFFFF;
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+        .result table td, .result table th {
+            border: 1px solid #FFFFFF;
+            padding: 3px 4px;
+        }
+        .result table tbody td {
+            font-size: 16px;
+        }
+        .result table td:nth-child(even) {
+            background: #EBEBEB;
+        }
+        .result table thead {
+            background: #FFFFFF;
+            border-bottom: 4px solid #333333;
+        }
+        .result table thead th {
+            font-size: 15px;
+            font-weight: bold;
+            color: #333333;
+            text-align: center;
+            border-left: 2px solid #333333;
+        }
+        .result table thead th:first-child {
+            border-left: none;
+        }
+
+        .result table tfoot {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333333;
+            border-top: 4px solid #333333;
+        }
+    
+        .result table tfoot td {
+            font-size: 14px;
+        }        
+    </style>
+
+    <script type="text/javascript">
+
+        var _status = true;
+        var _activeTab = '';
+        var _docSpec = null;
+        var _url = 'http://homm3.plazacraft.com/damagesymulator/api/';
+
+        //var _url = 'http://localhost:5002/api/';
+
+        function SetStatus(value, isError)
+        {
+            var status = $('#status');
+            status.html(value);
+            if (isError)
+            {
+                status.removeClass("statusok");
+                status.addClass("statuserror");
+            }
+            else
+            {
+                status.removeClass("statuserror");
+                status.addClass("statusok");
+            }
+
+            _status = !isError;
+        }
+
+        function GetDictValues(dict, endpoint )
+        {
+            var request = new XMLHttpRequest();
+            var ret =[];
+            var url = _url + dict;
+            if (endpoint != null)
+                url = url + "/" + endpoint;
+
+            request.open('GET', url, false);
+            request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            try{
+                request.send(null);        
+            }
+            catch(e)
+            {
+                SetStatus("Error during connection to server", true);
+            }
+
+            if(request.readyState == 4 && request.status == 200) {
+                console.log(request.responseText);
+                ret = JSON.parse(request.responseText);
+            }   
+            else 
+            {
+                console.log("Request error");
+                SetStatus("Error during initialization", true);
+            }
+
+            return ret;
+        }
+
+        function b64toByteArray(b64Data) {
+
+        var byteNumbers = new Array(b64Data.length);
+            for (var i = 0; i < b64Data.length; i++) {
+                byteNumbers[i] = b64Data.charCodeAt(i);
+            }
+
+            return new Uint8Array(byteNumbers);
+        }
+
+        function sendFile()
+        {
+            SetStatus("Calculating&Downloading ...");
+
+            var request = new XMLHttpRequest();
+        
+            request.open('POST', _url + 'fightsimulation/csv-file', true);
+
+            request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+            request.onload = function () {
+                // Begin accessing JSON data here
+                if(request.readyState == 4 && request.status == 200) {
+                    console.log(request.responseText);
+                    var res = JSON.parse(request.responseText);
+                    var blob = new Blob([b64toByteArray(atob(res.fileContents))], { type: res.contentType });
+                    var link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = res.fileDownloadName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    SetStatus("Data returned.");
+                }
+                else if (request.readyState == 4 && request.status == 400){
+                    var msg = JSON.parse(request.responseText).Message;
+                    SetStatus(msg.toString(),true);
+                }
+                else {
+                    SetStatus(request.responseText.toString(), true);
+                }
+
+            },
+            request.onerror = function(e){
+                SetStatus("Error during connection to server", true);
+            }
+
+            var data = "";
+            if (_activeTab == 'xonomy')
+                data = '"' + Xonomy.harvest() +'"';
+            else if (_activeTab == 'raw')
+                data = '"' + $('#rawXmlEditor').val() + '"';
+
+            // Send request
+            request.send(data);
+
+        }
+
+        function send()
+        {
+            $('#log').html("");
+            $('#result').html("");
+            SetStatus("Calculating ...");
+
+            var request = new XMLHttpRequest();
+        
+            request.open('POST', _url + 'fightsimulation/html', true);
+
+            request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+            request.onload = function () {
+                // Begin accessing JSON data here
+                if(request.readyState == 4 && request.status == 200) {
+                    console.log(request.responseText);
+                    var res = JSON.parse(request.responseText);
+                    $('#result').html(res.text);
+                    $('#log').html(res.log.replace(/(\r\n|\n|\r)/gm,"<br />"));
+                    SetStatus("Data returned.");
+
+                }
+                else if (request.readyState == 4 && request.status == 400){
+                    var msg = JSON.parse(request.responseText).Message;
+                    SetStatus(msg.toString(),true);
+                }
+                else {
+                    SetStatus(request.responseText.toString(), true);
+                }
+
+            },
+            request.onerror = function(e){
+                SetStatus("Error during connection to server", true);
+            }
+
+            var data = "";
+            if (_activeTab == 'xonomy')
+                data = '"' + Xonomy.harvest() +'"';
+            else if (_activeTab == 'raw')
+                data = '"' + $('#rawXmlEditor').val() + '"';
+
+            // Send request
+            request.send(data);
+
+        }
+
+        function sendChart()
+        {
+            $('#log').html("");
+            $('#result').html("");
+            SetStatus("Calculating ...");
+
+            var request = new XMLHttpRequest();
+        
+            request.open('POST', _url + 'fightsimulation/html-chart', true);
+
+            request.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+
+            request.onload = function () {
+                // Begin accessing JSON data here
+                if(request.readyState == 4 && request.status == 200) {
+                    console.log(request.responseText);
+                    var res = JSON.parse(request.responseText);
+                    $('#result').html(res.text);
+                    //$('#log').html(res.log.replace(/(\r\n|\n|\r)/gm,"<br />"));
+                    SetStatus("Data returned.");
+
+                }
+                else if (request.readyState == 4 && request.status == 400){
+                    var msg = JSON.parse(request.responseText).Message;
+                    SetStatus(msg.toString(),true);
+                }
+                else {
+                    SetStatus(request.responseText.toString(), true);
+                }
+
+            },
+            request.onerror = function(e){
+                SetStatus("Error during connection to server", true);
+            }
+
+            var data = "";
+            if (_activeTab == 'xonomy')
+                data = '"' + Xonomy.harvest() +'"';
+            else if (_activeTab == 'raw')
+                data = '"' + $('#rawXmlEditor').val() + '"';
+
+            // Send request
+            request.send(data);
+
+        }        
+
+        function switchSides()
+        {
+            var data = "";
+            if (_activeTab == 'xonomy')
+                data = Xonomy.harvest();
+            else if (_activeTab == 'raw')
+                data = $('#rawXmlEditor').val();
+
+            data = data.replace("<Attacker", "<TDefenderT").replace("</Attacker>", "</TDefenderT>");
+            data = data.replace("<Defender", "<Attacker").replace("</Defender>", "</Attacker>");
+            data = data.replace("<TDefenderT", "<Defender").replace("</TDefenderT>", "</Defender>");
+            
+            if (_activeTab == 'xonomy')
+                Xonomy.render(data, $("#xonomy")[0], _docSpec);
+            else if (_activeTab == 'raw')
+                $('#rawXmlEditor').val(data);
+
+
+        }
+
+        function loadExample()
+        {
+            var select = $('#selectExample').val();
+
+            var txtFile = new XMLHttpRequest();
+            txtFile.open("GET", "http://homm3.plazacraft.com/damagesymulator/" + select, true);
+            txtFile.onreadystatechange = function() {
+            if (txtFile.readyState === 4) {  // Makes sure the document is ready to parse.
+                if (txtFile.status === 200) {  // Makes sure it's found the file.
+                    allText = txtFile.responseText; 
+                    allText = allText.replace(/(\r\n|\n|\r)/gm,"");
+                    allText = allText.replace(/(>\s+<)/gm,"><");
+                    
+                    if (_activeTab == 'xonomy')
+                        Xonomy.render(allText, $("#xonomy")[0], _docSpec);
+                    else if (_activeTab == 'raw')
+                        $('#rawXmlEditor').val(allText);
+                }
+            }
+}
+txtFile.send(null);            
+
+
+
+        }
+
+        function changeToXonomy(evt){
+            if (_activeTab != 'xonomy'){
+                var val = $('#rawXmlEditor').val();
+                var xonomy = $("#xonomy")[0];
+                Xonomy.render(val, xonomy, _docSpec);
+                _activeTab = 'xonomy';
+                changeTab(evt, 'editor');
+            }
+        }
+        function changeToRaw(evt){
+            if (_activeTab != 'raw'){
+                var val = Xonomy.harvest();
+                var rawEdit = $('#rawXmlEditor');
+                rawEdit.val(val);
+                rawEdit.height($('#xonomy').height());
+                _activeTab = 'raw';
+                changeTab(evt, 'rawXML');
+            }
+        }
+
+        function changeTab(evt, tabName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = $(".tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = $(".tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            $('#' + tabName)[0].style.display = "block";
+            evt.target.className += " active";
+        }
+
+
+        function setMode() {
+            var mode=$("input[name='mode']:checked").val();
+            Xonomy.setMode(mode);
+        }
+	        
+
+        function start() {
+
+            var terrains = GetDictValues("terrains");
+            //var creatureAbilities = GetDictValues("creatureabilities");
+            //creatureAbilities.sort();
+            var creatures = GetDictValues("creatures");
+            creatures.sort();
+            var heroAbilities = GetDictValues("heroabilities");
+            heroAbilities.sort();
+            var secondarySkills = GetDictValues("secondaryskills");
+            secondarySkills.sort();
+            var spells = GetDictValues("spells");
+            var penalties = GetDictValues("penalties");
+            var attackTypes = GetDictValues("attacktypes");
+            var creatureAbilityParams = GetDictValues("creatureabilityparams", 'xonomy');
+
+            var hero = {
+                        menu: [{
+                            caption: "Append an <Creature>",
+                            action: Xonomy.newElementChild,
+                            actionParameter: '<Creature Name="" Count="1" AttackType="Melee" Luck="false" RangePenalty="None" ObstaclePenalty="None" />'
+                        },{
+                            caption: "Append an <HeroAbility>",
+                            action: Xonomy.newElementChild,
+                            actionParameter: '<HeroAbility Name="" />'
+                        },{
+                            caption: "Append an <SecondarySkill>",
+                            action: Xonomy.newElementChild,
+                            actionParameter: '<SecondarySkill Name="" Level="0" />'
+                        }],
+                        attributes: {
+                            "Attack": {
+                                asker: Xonomy.askString
+                            },
+                            "Defense": {
+                                asker: Xonomy.askString
+                            },
+                            "Level": {
+                                asker: Xonomy.askString
+                            }
+                        }
+                    }
+            var sharedMenu = [{
+                                caption: "Delete this element",
+                                action: Xonomy.deleteElement
+                            }, {
+                                caption: "New <Creature> before this",
+                                action: Xonomy.newElementBefore,
+                                actionParameter: '<Creature Name="" Count="1" AttackType="Melee" Luck="false" RangePenalty="None" ObstaclePenalty="None" />'
+                            }, {
+                                caption: "New <Creature> after this",
+                                action: Xonomy.newElementAfter,
+                                actionParameter: '<Creature Name="" Count="1" AttackType="Melee" Luck="false" RangePenalty="None" ObstaclePenalty="None" />'
+                            }, {
+                                caption: "New <HeroAbility> before this",
+                                action: Xonomy.newElementBefore,
+                                actionParameter: '<HeroAbility Name=""/>'
+                            }, {
+                                caption: "New <HeroAbility> after this",
+                                action: Xonomy.newElementAfter,
+                                actionParameter: '<HeroAbility Name="" />'
+                            }, {
+                                caption: "New <SecondarySkill> before this",
+                                action: Xonomy.newElementBefore,
+                                actionParameter: '<SecondarySkill  Name="" Level="0"/>'
+                            },{
+                                caption: "New <SecondarySkill> after this",
+                                action: Xonomy.newElementAfter,
+                                actionParameter: '<SecondarySkill Name="" Level="0"/>'
+                            }
+                        ]
+            sharedMenu.splice(1, 0, {
+                    caption: "New <Param>",
+                    action: Xonomy.newElementChild,
+                    actionParameter: '<Param Name="" Value="0" />'
+                });
+
+            _docSpec={
+                onchange: function(){
+                    console.log("I been changed now!")
+                },
+                validate: function(obj){
+                    console.log("I be validatin' now!")
+                },
+                
+                elements: {
+                    "Fight": {
+                        menu: [{
+                            caption: "Add @Terrain=\"Grass\"",
+                            action: Xonomy.newAttribute,
+                            actionParameter: {name: "Terrain", value: "Grass"},
+                            hideIf: function(jsElement){
+                                    return jsElement.hasAttribute("Terrain");
+                                }
+                            }],
+                        attributes: {
+                            "Terrain": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: terrains
+                            }
+                        }
+                    },
+                    "Attacker": hero,
+                    "Defender": hero,
+                    "Creature": {
+                        menu: sharedMenu,
+                        attributes: {
+                            "Name": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: creatures
+                            },
+                            "Count": {
+                                asker: Xonomy.askString
+                            },
+                            "AttackType": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: attackTypes
+                            }, 
+                            "Luck": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: ["true", "false"]
+                            }, 
+                            "RangePenalty": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: penalties
+                            }, 
+                            "ObstaclePenalty": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: penalties
+                            }                                        
+                        },
+                        canDropTo: ["Attacker", "Defender"]
+                    },
+                    "HeroAbility": {
+                        menu: sharedMenu,
+                        attributes: {
+                            "Name": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: heroAbilities
+                            },
+                        },
+                        canDropTo: ["Attacker", "Defender"]
+                    },
+                    "SecondarySkill": {
+                        menu: sharedMenu,
+                        attributes: {
+                            "Name": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: secondarySkills
+                            },
+                            "Level": {
+                                asker: Xonomy.askString
+                            }
+                        },
+                        canDropTo: ["Attacker", "Defender"]
+                    } ,
+                    "Param": {
+                        menu:  [{
+                                caption: "Delete this element",
+                                action: Xonomy.deleteElement
+                            }, {
+                                caption: "New <Param> after this",
+                                action: Xonomy.newElementAfter,
+                                actionParameter: '<Param Name="" Value="0"/>'
+                            }, {
+                                caption: "New <Param> before this",
+                                action: Xonomy.newElementBefore,
+                                actionParameter: '<Param Name="" Value="0"/>'
+                            }],
+                        attributes: {
+                            "Name": {
+                                asker: Xonomy.askPicklist,
+                                askerParameter: creatureAbilityParams
+                            },
+                            "Value": {
+                                asker: Xonomy.askString
+                            }
+                        },
+                        canDropTo: ["Creature"]
+                    }                               
+
+
+
+                }
+            };
+
+
+
+            var xml='<Fight \
+                xmlns="urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator" \
+                xmlns:xs="http://www.w3.org/2001/XMLSchema" \
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" \
+                xsi:schemaLocation="http://homm3.plazacraft.com/damagesymulator/schemas/Plazacraft.HOMM3.DamageSymulator.Fight.xsd" \
+                Terrain="Grass"><Attacker Attack="0" Defense="0" Level="1"></Attacker><Defender Attack="0" Defense="0" Level="0"></Defender></Fight>';
+    
+            $('#rawXmlEditor').val(xml);
+            if (_status)
+                SetStatus("Ready");
+            $('#defaultTab').click();
+        }
+
+
+    </script>
+</head>
+
+<body onload="start()">
+
+    <div style="width:100%;overflow:auto">
+        <div style="float:left; width:60%;">
+            <!-- Tab links -->
+            <div class="tab">
+                <button class="tablinks" onclick="changeToXonomy(event)" id="defaultTab">Editor</button>
+                <button class="tablinks" onclick="changeToRaw(event);">Raw XML</button>
+            </div>
+        
+            <!-- Tab content -->
+            <div id="editor" class="tabcontent">
+                <h3 style="display:inline-block;">Editor</h3>
+                <label onclick="setMode()"><input type="radio" name="mode" value="nerd" id="chkModeNerd" checked="checked">nerd mode</label>            
+                <label onclick="setMode()"><input type="radio" name="mode" value="laic" id="chkModeLaic">laic mode</label>            
+                <div id="xonomy"></div>
+            </div>
+        
+            <div id="rawXML" class="tabcontent">
+                <h3>Raw XML</h3>
+                <textarea id="rawXmlEditor" style="width:100%;"></textarea>
+            </div>
+
+            <div>
+                <br />
+                <button class="submitter" onclick="send()" title="Simulate and present damage calculation.">Simulate</button>
+                <button class="submitter" onclick="sendChart()" title="Simulate and present table with wins.">Simulate wins</button>
+                <button class="submitter" onclick="sendFile()">Get CSV</button>
+                <button class="submitter" onclick="switchSides()" title="Switch Attacker with Defender">Attacker &lt;-&gt; Defender</button>
+                <div id="status" style="display: inline-block"></div>
+            </div>
+            <div>
+                Examples: 
+                <select id="selectExample">
+                    <option value="examples/1-Level Fight.xml">Level 1 creatures</option>
+                    <option value="examples/1u-Level Fight.xml">Level 1 upgraded creatures</option>
+                    <option value="examples/2-Level Fight.xml">Level 2 creatures</option>
+                    <option value="examples/2u-Level Fight.xml">Level 2 upgraded creatures</option>
+                    <option value="examples/3-Level Fight.xml">Level 3 creatures</option>
+                    <option value="examples/3u-Level Fight.xml">Level 3 upgraded creatures</option>
+                  </select>
+                  <button class="submitter" onclick="loadExample()" title="Loads example fight">Load</button>
+            </div>
+            <div>
+                <p>Instruction:
+                    <ul>
+                        <li>1. Add creature, ability or skill by clicking 'Attacker' label.</li>
+                        <li>2. Selet crature by clicking value of the label 'Name'.</li>
+                        <li>3. Select other parameters (Count of creatures in stack, attack, defense).</li>
+                        <li>4. For some creatures you can add Param element with addition paramter to run special abilities.</li>
+                        <li>5. Do the same for defender.</li>
+                        <li>6. Click Simulate(for simulation), Get CSV (for export) or Simulate wins (to get table to clearly see who win with whom).</li>
+                    </ul>
+                </p>
+                <p>Result description (Simulation):
+                    <ul>
+                        <li><b>Attack Damage</b> - min-max(avg) damage done by attacker</li>
+                        <li><b>Attack Count</b> - min-max(avg) count of killed done by attacker</li>
+
+                        <li><b>Counterstrike Count (For Min Attack)</b> - min-max(avg) count of killed done by defender if attacker did min damage<b style="color:red">(max value is the most pesimistic for attacker)</b>.</li>
+                        <li><b>Counterstrike Count (For Max Attack)</b> - min-max(avg) count of killed done by defender if attacker did max damage<b style="color:green">(min value is the most optimistic for attacker)</b>.</li>
+                        <li><b>Counterstrike Count (For Avg Attack)</b> - min-max(avg) count of killed done by defender if attacker did avg damage.</li>
+
+                        <li><b>Final result</b> - simulation of many rounds until one stack dies. Number pattern: attacker lefts-defender lefts(rounds). First row is when both do min damage, second for max and last for avg.</li>
+
+                        
+                    </ul>
+                </p>
+                <p>Result description (Simulate wins):
+                    <ul>
+                        <li><b>Columns</b> - All defender creatures</li>
+                        <li><b>Rows</b> - All attacker creatures</li>
+                        <li><b>Cells</b> - Information in which rounds attacker win (green cell) or lost (red cell) with defender</b>.</li>
+                    </ul>
+                </p>
+            </div>
+        
+        </div>
+
+        <div style="float:right;width:40%;">
+            <div style="margin-left:30px">
+                <h2>Heroes of Might & Magic 3 - Damage simulutor</h2>
+                <p>
+                    This simulator has been created based on <a href="http://heroes.thelazy.net/wiki/Damage">HOMM3 wiki</a>. 
+                    To use it, please configure your fight in the control on the left and click simulate (results will be shown on the bottom of the page). 
+                    It makes simulation attack of every attacker's creatue with every defender's creature. To add a creature click 'Attacker' or 'Defender' label.
+                    Saving and loading configuration can be done by using Raw XML tab. 
+                    Many thanks to <a href="http://www.lexiconista.com/xonomy/">Xonomy</a> for great XML javascript control.
+                </p>
+                <p>
+                    TODO:
+                    <ul>
+                        <li>Add spells</li>
+                        <li>Better exception handling & log</li>
+                        <li>Page styling :)</li>
+                        <li>Add creature's specialities which don't inflict damage but inflict killing number.</li>
+                    </ul>
+                </p>
+                <p>
+                    References:
+                    <ul>
+                        <li><a href="assets/changelog.txt" >Changelog</a></li>
+                        <li><a href="http://homm3.plazacraft.com/damagesymulator/examples/1-Level Fight.xml" >Example for fight bettween all 1st level creatures.</a></li>
+                        <li><a href="http://homm3.plazacraft.com/damagesymulator/examples/1u-Level Fight.xml" >Example for fight bettween all 1st level upgraded creatures.</a></li>
+                        <li><a href="http://homm3.plazacraft.com/damagesymulator/schemas/Plazacraft.HOMM3.DamageSymulator.Definition.xsd" >World definition xml schema</a></li>
+                        <li><a href="http://homm3.plazacraft.com/damagesymulator/schemas/Plazacraft.HOMM3.DamageSymulator.Fight.xsd" >Fight xml schema</a></li>
+                        <li><a href="http://homm3.plazacraft.com/damagesymulator/config/definition.xml" >World definition xml</a></li>
+                    </ul>
+                </p>
+                <p>
+                        Contact: <a href="mailto:r.plazaman@gmail.com">r.plazaman@gmail.com</a>
+                </p>             
+                <p>
+                    <p><b>This simulator has been created thanks to:</b></p>
+                    <a href="https://thelovers.plazacraft.com?source=homm3-1" target="_blank">
+                        <img src="assets/thelovers.png" style="max-width: 100%;"/>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div id="result" class="result" ></div>
+    <br />
+    <div id="log" ></div>
+
+</body>
+</html>
+

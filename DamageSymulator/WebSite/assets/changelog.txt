@@ -1,0 +1,26 @@
+[2019-02-04]
+- log limitation (for large Simulation there was a lot of data to send to browser)
+
+[2019-01-29]
+- final damage is rounded up, this fixes issues with infinity war for fights where creatures do 0 dmg.
+- examples updated with real(maximum) creature dwelings during one week in target town
+
+[2019-01-29]
+- added example fights 
+- added option 'Simulate wins' which shows a table with win/lost for target fight. Table is build based on avg damage.
+- added missing 'Sand' terrain
+
+[2019-01-25]
+- added button to switch attacker with defender
+- changelog created
+- 'No Melee Penalty', 'No Enemy Retaliation', 'Double Attack' implemented in simulation.
+- 'Melee Penalty' removed from fight.
+- added simulation of full fight (to kill target stack), not only conterstrike
+- counterstrike is done only if possible
+- for countestrike AttackType is ignored (counterstrike is always melee). Defender AttackType matters only for next rounds simulation 
+- during the simulation if any of the fighers has AttackType = 'Melee' then after first attack rest of the battle is Melee. 
+
+[2019-01-24]
+- added counting of average kills to result table
+- result table has been changed
+- added export to csv

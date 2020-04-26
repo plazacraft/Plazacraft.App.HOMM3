@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    targetNamespace="urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator"
+    elementFormDefault="qualified"
+    xmlns="urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+  <xs:include schemaLocation="Plazacraft.HOMM3.DamageSymulator.Definition.xsd" />
+ 
+  <xs:element name="Fight" type="Fight" />
+  
+  <xs:complexType name="Fight" > 
+    <xs:all>
+      <xs:element name="Attacker" type="Hero" minOccurs="1" />
+      <xs:element name="Defender" type="Hero" minOccurs="1" />
+    </xs:all>
+    <xs:attribute name="Terrain" type="Terrain" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Hero">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="Creature" minOccurs="0" maxOccurs="unbounded" type="CreatureRef" />
+          <xs:element name="SecondarySkill" minOccurs="0" maxOccurs="unbounded" type="Reference" />
+          <xs:element name="HeroAbility" minOccurs="0" maxOccurs="unbounded" type="Reference" />
+        </xs:choice> 
+    </xs:sequence> 
+    <xs:attribute name="Attack" type="xs:int" use="required" />
+    <xs:attribute name="Defense" type="xs:int" use="required" />
+    <xs:attribute name="Level" type="xs:int" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreatureRef">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="Spell" minOccurs="0" maxOccurs="unbounded" type="Reference" />
+          <xs:element name="Param" minOccurs="0" maxOccurs="unbounded" type="Param" />
+        </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Count" type="xs:int" use="required" />
+    <xs:attribute name="AttackType" type="AttackType" use="required" />
+    <xs:attribute name="Luck" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="RangePenalty" type="Penalty" use="optional" default="None" />
+    <xs:attribute name="ObstaclePenalty" type="Penalty" use="optional" default="None" />
+  </xs:complexType>
+   
+  <xs:complexType name="Param">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Value" type="xs:int" use="required" />
+  </xs:complexType>
+    
+  <xs:simpleType name="Penalty">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None"/>
+          <xs:enumeration value="value50"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  
+
+
+</xs:schema>

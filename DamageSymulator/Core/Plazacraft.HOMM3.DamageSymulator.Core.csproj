@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Plazacraft.HOMM3.DamageSymulator.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>

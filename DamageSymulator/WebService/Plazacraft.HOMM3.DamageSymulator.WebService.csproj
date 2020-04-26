@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <RuntimeFrameworkVersion>2.1.6</RuntimeFrameworkVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Plazacraft.HOMM3.DamageSymulator.Core.csproj" />
+    <Content Include="..\Schemas\Plazacraft.HOMM3.DamageSymulator.Definition.xsd" Link="Schemas\Plazacraft.HOMM3.DamageSymulator.Definition.xsd" CopyToOutputDirectory="PreserveNewest" />    
+    <Content Include="..\Schemas\Plazacraft.HOMM3.DamageSymulator.Fight.xsd" Link="Schemas\Plazacraft.HOMM3.DamageSymulator.Fight.xsd" CopyToOutputDirectory="PreserveNewest" />    
+    <Content Include="..\Config\Definition.xml" Link="Config\Definition.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- <PackageReference Update="Microsoft.NETCore.App" Version="2.1.6" />  -->
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+  </ItemGroup> 
+
+</Project>

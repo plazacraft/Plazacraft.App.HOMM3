@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema 
+    id="Definition"
+    targetNamespace="urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator"
+    elementFormDefault="qualified"
+    xmlns="urn:x-plazacraft.org:plazacraft.homm3-1.0-damagesymulator"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <xs:element name="Definition" type="Definition" />
+  
+
+  <xs:complexType name="Definition" >
+    <xs:all>
+      <xs:element name="Creatures" type="Creatures" minOccurs="0" />
+      <!-- <xs:element name="Heroes" type="Heroes" minOccurs="0" /> -->
+      <xs:element name="Spells" type="Spells" minOccurs="0" />
+      <xs:element name="HeroAbilities" type="HeroAbilities"  minOccurs="0" />
+      <xs:element name="SecondarySkills" type="SecondarySkills" minOccurs="0" />
+      <xs:element name="CreatureAbilities" type="CreatureAbilities" minOccurs="0" />
+      <xs:element name="Modificators" type="Modificators" minOccurs="0" />
+    </xs:all>  
+  </xs:complexType>
+
+  <xs:complexType name="Creatures">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="Creature" minOccurs="0" maxOccurs="unbounded" type="Creature" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- <xs:complexType name="Heroes">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="Hero" minOccurs="0" maxOccurs="unbounded" type="Hero" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType> -->
+  <xs:complexType name="Spells">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="Spell" minOccurs="0" maxOccurs="unbounded" type="Spell" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HeroAbilities">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="HeroAbility" minOccurs="0" maxOccurs="unbounded" type="HeroAbility" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SecondarySkills">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="SecondarySkill" minOccurs="0" maxOccurs="unbounded" type="SecondarySkill" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CreatureAbilities">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="CreatureAbility" minOccurs="0" maxOccurs="unbounded" type="CreatureAbility" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Modificators">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="Modificator" minOccurs="0" maxOccurs="unbounded" type="Modificator" />
+          <xs:element name="LevelModificator" minOccurs="0" maxOccurs="unbounded" type="LevelModificator" />
+        </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Creature">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="CreatureAbilityRef" minOccurs="0" maxOccurs="unbounded" type="Reference" />
+        </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Terrain" type="TerrainList" use="required" />
+    <xs:attribute name="Attack" type="xs:int" use="required" />
+    <xs:attribute name="Defense" type="xs:int" use="required" />
+    <xs:attribute name="MinDamage" type="xs:int" use="required" />
+    <xs:attribute name="MaxDamage" type="xs:int" use="required" />
+    <xs:attribute name="Health" type="xs:int" use="required" />
+    <xs:attribute name="Level" type="xs:int" use="required" />
+    <xs:attribute name="AttackType" type="AttackTypeList" use="required" />
+  </xs:complexType>  
+  <!-- <xs:complexType name="Hero">
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">      
+          <xs:element name="HeroAbilityRef" minOccurs="0" maxOccurs="unbounded" type="Reference" />
+          <xs:element name="SecondarySkillRef" minOccurs="0" maxOccurs="unbounded" type="Reference" />
+        </xs:choice>
+    </xs:sequence>  
+    <xs:attribute name="Name" type="xs:string" use="required" />    
+  </xs:complexType>   -->
+  <xs:complexType name="Spell">
+  </xs:complexType>  
+  <xs:complexType name="HeroAbility">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">      
+        <xs:element name="Factor" minOccurs="0" maxOccurs="unbounded" type="Factor" />
+      </xs:choice>
+    </xs:sequence>  
+    <xs:attribute name="Name" type="xs:string" use="required" />
+  </xs:complexType>  
+  <xs:complexType name="CreatureAbility">  
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">      
+        <xs:element name="Factor" minOccurs="0" maxOccurs="unbounded" type="Factor" />
+      </xs:choice>
+    </xs:sequence>  
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Params" type="xs:string" use="optional" />
+  </xs:complexType>  
+  <xs:complexType name="SecondarySkill">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">      
+        <xs:element name="Factor" minOccurs="0" maxOccurs="unbounded" type="Factor" />
+      </xs:choice>
+    </xs:sequence>  
+    <xs:attribute name="Name" type="xs:string" use="required" />
+  </xs:complexType>  
+
+
+  <xs:complexType name="Factor">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">      
+        <xs:element name="Modificator" type="Modificator" />
+        <xs:element name="LevelModificator" type="LevelModificator" />
+        <xs:element name="ModificatorRef" type="Reference" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="Type" type="FactorTypeList" use="required" />
+    <xs:attribute name="AttackType" type="AttackTypeList" use="required" />
+    <xs:attribute name="Opponent" type="xs:string" use="optional" />
+    <xs:attribute name="Affected" type="xs:string" use="optional" />
+    <xs:attribute name="CreatureAbility" type="xs:string" use="optional" />
+  </xs:complexType>  
+
+  <xs:complexType name="LevelModificator">
+    <xs:sequence>
+      <xs:element name="Level_0" type="Level" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Level_1" type="Level" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Level_2" type="Level" minOccurs="1" maxOccurs="1" />
+      <xs:element name="Level_3" type="Level" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="optional" />
+    <xs:attribute name="RoundType" type="RoundType" use="optional" default="None" />
+  </xs:complexType>  
+
+  <xs:complexType name ="Modificator">
+    <xs:simpleContent >
+      <xs:extension base="xs:string">
+        <xs:attribute name="Name" type="xs:string" use="optional" />
+        <xs:attribute name="RoundType" type="RoundType" use="optional" default="None" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType> 
+
+
+  <xs:complexType name ="Level">
+    <xs:simpleContent >
+      <xs:extension base="xs:string">
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType> 
+
+  <xs:simpleType name="FactorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="I0"/>
+      <xs:enumeration value="I1"/>
+      <xs:enumeration value="I2"/>
+      <xs:enumeration value="I3"/>
+      <xs:enumeration value="I4"/>
+      <xs:enumeration value="I5"/>
+      <xs:enumeration value="R1"/>
+      <xs:enumeration value="R2"/>
+      <xs:enumeration value="R3"/>
+      <xs:enumeration value="R4"/>
+      <xs:enumeration value="R5"/>
+      <xs:enumeration value="R6"/>
+      <xs:enumeration value="R7"/>
+      <xs:enumeration value="R8"/>
+      <xs:enumeration value="ImmuneToCreatureAbility" />
+      <xs:enumeration value="IgnoreAttack" />
+      <xs:enumeration value="IgnoreDefense" />
+      <xs:enumeration value="NoEnemyRetaliation" />
+      <xs:enumeration value="ShootsTwice" />
+      <xs:enumeration value="StrikesTwice" />
+      <xs:enumeration value="Ferocity" />
+      <xs:enumeration value="NoMeleePenalty" />      
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:simpleType name="FactorTypeList">
+    <xs:list itemType="FactorType">
+    </xs:list>
+  </xs:simpleType>
+
+    <xs:simpleType name="AttackType">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="Melee"/>
+        <xs:enumeration value="Ranged"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+  <xs:simpleType name="AttackTypeList">
+    <xs:list itemType="AttackType">
+    </xs:list>
+  </xs:simpleType>
+
+  <xs:simpleType name="Terrain">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="Grass"/>
+        <xs:enumeration value="Snow"/>
+        <xs:enumeration value="Lava"/>
+        <xs:enumeration value="Subterranean"/>
+        <xs:enumeration value="Dirt"/>
+        <xs:enumeration value="Swamp"/>
+        <xs:enumeration value="Sand"/>        
+        <xs:enumeration value="Rough"/>
+        <xs:enumeration value="Highlands"/>
+      </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="RoundType">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="None"/>
+        <xs:enumeration value="Up"/>
+        <xs:enumeration value="Down"/>
+        <xs:enumeration value="Normal"/>
+      </xs:restriction>
+  </xs:simpleType>
+
+
+  <xs:simpleType name="TerrainList">
+    <xs:list itemType="Terrain">
+    </xs:list>
+  </xs:simpleType>
+
+  <xs:complexType name="Reference">
+    <xs:attribute name="Name" type="xs:string" use="required"/>
+    <xs:attribute name="Level" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+</xs:schema>
