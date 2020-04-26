@@ -1,0 +1,1 @@
+# Plazacraft.App.HOMM3
