@@ -1853,7 +1853,7 @@
 		Health="30"
 		Terrain="Dirt"
 		Level="5"
-		AttackType="Melee">
+		AttackType="Ranged">
 		<CreatureAbilityRef Name="Immune to Mind Spells" />
 	</Creature>		
 	<Creature
@@ -1865,7 +1865,7 @@
 		Health="40"
 		Terrain="Dirt"
 		Level="5"
-		AttackType="Melee">
+		AttackType="Ranged">
 		<CreatureAbilityRef Name="Immune to Mind Spells" />
 	</Creature>	
 	<Creature
