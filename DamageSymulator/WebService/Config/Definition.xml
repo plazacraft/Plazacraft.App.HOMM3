@@ -64,7 +64,7 @@
 	</HeroAbility>	
 	<HeroAbility Name="Armorer">
 		<Factor Type="R3" AttackType="Melee Ranged"> 
-			<Modificator>0.05 * %HeroLevel%</Modificator>
+			<Modificator>0.05 * %HeroLevel% * %R2%</Modificator>
 		</Factor>  
 	</HeroAbility>	
 	<HeroAbility Name="Speciality Archers">

@@ -1,10 +1,10 @@
 
 # REQUIREMENTS
 # Microsoft SDK
-# .NET Core 2.1
+# .NET Core 3.0
 
 # CONFIG
-$sdk = "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools\";
+$sdk = "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\";
 
 # TOOLS
 $xsd = $sdk + "xsd.exe";

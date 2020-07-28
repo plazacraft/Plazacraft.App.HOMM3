@@ -390,7 +390,7 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
 
         }
 
-        private decimal EvalModificator(object modificator, FactorInfo factorInfo, Dictionary<FactorType, List<FactorInfo>> defenderFactors, Hero hero, Creature creature, TextWriter log, decimal i2)
+        private decimal EvalModificator(object modificator, FactorInfo factorInfo, Dictionary<FactorType, List<FactorInfo>> defenderFactors, Hero hero, Creature creature, TextWriter log, decimal i2, decimal r2=1)
         {
             // %HeroLevel%
             // %CreatureLevel%
@@ -398,6 +398,7 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
             // %CreatureAttack%
             // %CreatureDefense%
             // %I2%
+            // %R2%
             // PARAMS
 
             string value = string.Empty;
@@ -438,6 +439,8 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
             System.Globalization.NumberFormatInfo nfi = new System.Globalization.NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
             value = value.Replace("%I2%", i2.ToString(nfi));
+
+            value = value.Replace("%R2%", i2.ToString(nfi));
 
             // check immunity
             if (factorInfo.Parent is CreatureAbility)
@@ -494,7 +497,7 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
 
         }
 
-        private decimal ExecuteFactor(FactorType type, Dictionary<FactorType, List<FactorInfo>> factors, Dictionary<FactorType, List<FactorInfo>> defenderFactors, Hero hero, Creature creature, TextWriter log, decimal i2 = 1)
+        private decimal ExecuteFactor(FactorType type, Dictionary<FactorType, List<FactorInfo>> factors, Dictionary<FactorType, List<FactorInfo>> defenderFactors, Hero hero, Creature creature, TextWriter log, decimal i2 = 1, decimal r2 = 1)
         {
             decimal value = 0;
             
@@ -521,7 +524,7 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
                 else if (info.Factor.Item is LevelModificator)
                     modificator = info.Factor.Item;
 
-                value += EvalModificator(modificator, info, defenderFactors, hero, creature, log, i2);
+                value += EvalModificator(modificator, info, defenderFactors, hero, creature, log, i2, r2);
             }
 
             log.WriteLine("Factor Type: {0} evaluationg finished with value: '{1}' for {2}.", type.ToString(), value, creature.Name);
@@ -627,13 +630,13 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
             I5 = ExecuteFactor(FactorType.I5, attackerFactors, defenderFactors, attackerHero, attacker, log);
             log.WriteLine("I5 value: {0}", I5);
 
-            R2 = ExecuteFactor(FactorType.R2, defenderFactors, defenderFactors, defenderHero, defender, log);
+            R2 = ExecuteFactor(FactorType.R2, defenderFactors, defenderFactors, defenderHero, defender, log, I2);
             log.WriteLine("R2 value: {0}", R2);
 
-            R3 = ExecuteFactor(FactorType.R3, defenderFactors, defenderFactors, defenderHero, defender, log);
+            R3 = ExecuteFactor(FactorType.R3, defenderFactors, defenderFactors, defenderHero, defender, log, I2, R2);
             log.WriteLine("R3 value: {0}", R3);
 
-            R4 = ExecuteFactor(FactorType.R4, defenderFactors, defenderFactors, defenderHero, defender, log);
+            R4 = ExecuteFactor(FactorType.R4, defenderFactors, defenderFactors, defenderHero, defender, log, I2, R2);
             log.WriteLine("R4 value: {0}", R4);
 
 
@@ -650,10 +653,10 @@ namespace Plazacraft.HOMM3.DamageSymulator.Core
                 R6 = (decimal)0.5;
             log.WriteLine("R6 (obstacle penalty) value: {0}", R6);
 
-            R7 = ExecuteFactor(FactorType.R7, defenderFactors, defenderFactors, attackerHero, attacker, log);
+            R7 = ExecuteFactor(FactorType.R7, defenderFactors, defenderFactors, attackerHero, attacker, log, I2, R2);
             log.WriteLine("R7 value: {0}", R7);
 
-            R8 = ExecuteFactor(FactorType.R8, defenderFactors, defenderFactors, defenderHero, defender, log);
+            R8 = ExecuteFactor(FactorType.R8, defenderFactors, defenderFactors, defenderHero, defender, log, I2, R2);
             log.WriteLine("R8 value: {0}", R8);
 
 

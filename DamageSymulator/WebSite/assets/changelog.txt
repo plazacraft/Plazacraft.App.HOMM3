@@ -1,3 +1,6 @@
+[2020-28-07]
+- Fix for bug: when armor speciality was added then creatures count during fight was increasing (root cause: missing R2 factor in equation R3 = 0,05 * %HeroLevel% * %R2% )
+
 [2019-02-04]
 - log limitation (for large Simulation there was a lot of data to send to browser)
 
