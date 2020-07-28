@@ -82,4 +82,4 @@ dotnet publish -c Release -r win10-x64 ./DamageSymulator/Console/Plazacraft.HOMM
 
 dotnet build ./DamageSymulator/WebService/Plazacraft.HOMM3.DamageSymulator.WebService.csproj
 # dotnet publish -c Debug -r win10-x64 ./DamageSymulator/WebService/Plazacraft.HOMM3.DamageSymulator.WebService.csproj
-dotnet publish -c Release -r win10-x64 ./DamageSymulator/WebService/Plazacraft.HOMM3.DamageSymulator.WebService.csproj
+dotnet publish -c Release -r win10-x86 ./DamageSymulator/WebService/Plazacraft.HOMM3.DamageSymulator.WebService.csproj
